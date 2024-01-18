@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="definition"
+            type="com.dictionmaster.search.Definition" />
+
+        <variable
+            name="position"
+            type="int" />
+
+        <variable
+            name="partOfSpeech"
+            type="String" />
+        <import type="com.dictionmaster.utils.StringUtils" />
+        <import type="android.view.View"/>
+
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp">
+
+            <TextView
+                android:id="@+id/tv_df"
+                style="@style/Definition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{StringUtils.getStyledText(position+`) `,`[`+partOfSpeech+`]`, definition.definition)}"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="3dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/exampleTextView"
+            style="@style/Definition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:visibility="@{!definition.example.empty &amp;&amp; definition.example!=null?View.VISIBLE:View.GONE}"
+            android:text="@{StringUtils.formatExample(definition.example)}"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/tv_df"
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

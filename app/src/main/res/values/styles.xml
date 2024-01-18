@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Definition">
+        <item name="android:fontFamily">@font/roboto_condensed</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#052D39</item>
+    </style>
+</resources>
