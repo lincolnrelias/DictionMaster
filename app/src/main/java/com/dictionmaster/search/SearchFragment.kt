@@ -2,10 +2,12 @@ package com.dictionmaster.search
 
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
@@ -30,10 +32,10 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-         binding =  DataBindingUtil.inflate(
-             inflater, R.layout.search_fragment, container, false
-         )
-        binding.btnSearch.setOnClickListener{
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.search_fragment, container, false
+        )
+        binding.btnSearch.setOnClickListener {
             lifecycleScope.launch {
                 makeApiRequest(binding.etTerm.text.toString())
             }
@@ -42,20 +44,31 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        //TODO check if should happen only on backpress
+        super.onResume()
+        binding.etTerm.text?.clear()
         binding.etTerm.requestFocus()
+        binding.etTerm.post {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.showSoftInput(binding.etTerm, InputMethodManager.SHOW_IMPLICIT)
+        }
+
     }
-        private fun makeApiRequest(word: String) {
+
+    private fun makeApiRequest(word: String) {
         val apiService = DictionaryApiService.create()
         val call = apiService.getWordDetails(word)
 
         isLoading(true)
         call.enqueue(object : Callback<List<DictionaryResponseModel>> {
-            override fun onResponse(call: Call<List<DictionaryResponseModel>>, response: Response<List<DictionaryResponseModel>>) {
+            override fun onResponse(
+                call: Call<List<DictionaryResponseModel>>,
+                response: Response<List<DictionaryResponseModel>>
+            ) {
                 if (response.isSuccessful) {
                     //response didn't come exclusively from cache
-                    if(response.raw().networkResponse!=null){
+                    if (response.raw().networkResponse != null) {
                         apiCallManager.updateCallCountAndTimestamp()
                     }
                     val data = response.body()
@@ -63,10 +76,13 @@ class SearchFragment : Fragment() {
                         val firstItem = data[0]
                         showResultFragment(firstItem)
                     }
-                } else if(!apiCallManager.canMakeApiCall() && response.code()==504) {
+                } else if (!apiCallManager.canMakeApiCall() && response.code() == 504) {
                     showPurchaseFragment()
-                } else{
-                    showErrorDialog("Request Error: "+response.code(),"check for misspelling and non-alphabetic characters")
+                } else {
+                    showErrorDialog(
+                        "Request Error: " + response.code(),
+                        "check for misspelling and non-alphabetic characters"
+                    )
                 }
                 isLoading(false)
             }
@@ -79,12 +95,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun isLoading(loading: Boolean) {
-            binding.loadingIndicator.visibility = if (loading) View.VISIBLE else View.GONE
-            binding.btnSearch.isEnabled = !loading
-            binding.etTerm.visibility = if (loading) View.GONE else View.VISIBLE
+        binding.loadingIndicator.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.btnSearch.isEnabled = !loading
+        binding.etTerm.visibility = if (loading) View.GONE else View.VISIBLE
     }
 
-    fun showErrorDialog(title: String,message: String) {
+    fun showErrorDialog(title: String, message: String) {
         AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
@@ -94,6 +110,7 @@ class SearchFragment : Fragment() {
             }
             .show()
     }
+
     private fun showResultFragment(data: DictionaryResponseModel) {
         val resultFragment = TermResultFragment.newInstance(data)
 
@@ -105,6 +122,7 @@ class SearchFragment : Fragment() {
         }
 
     }
+
     private fun showPurchaseFragment() {
         val purchaseFragment = PurchaseFragment()
 
