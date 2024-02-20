@@ -27,8 +27,7 @@ class TermResultFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.result_fragment, container, false
@@ -42,13 +41,11 @@ class TermResultFragment : Fragment() {
             override fun canScrollVertically() = false
         }
         if (data != null) {
-            recyclerView.adapter = DefinitionAdapter(
-                data.meanings.flatMap { meaning ->
-                    meaning.definitions.map { definition ->
-                        Pair(definition, meaning.partOfSpeech)
-                    }
+            recyclerView.adapter = DefinitionAdapter(data.meanings.flatMap { meaning ->
+                meaning.definitions.map { definition ->
+                    Pair(definition, meaning.partOfSpeech)
                 }
-            )
+            })
         }
 
         return binding.root
@@ -58,8 +55,13 @@ class TermResultFragment : Fragment() {
         binding.tvTitle.text = data.word
         binding.tvPhonetic.text = data.getDefaultPhoneticText()
         binding.tvIt.text = "That's it for \"" + data.word + "\"!"
-        binding.ibSpeaker.setOnClickListener {
-            data.getDefaultPhoneticAudio()?.let { it1 -> playAudio(it1) }
+        var audioUrl = data.getDefaultPhoneticAudio()
+        if (audioUrl == null) {
+            binding.ibSpeaker.isEnabled = false
+        } else {
+            binding.ibSpeaker.setOnClickListener {
+                playAudio(audioUrl)
+            }
         }
         binding.btNewSearch.setOnClickListener {
             activity?.onBackPressed()
@@ -68,17 +70,32 @@ class TermResultFragment : Fragment() {
     }
 
     private fun playAudio(audioUrl: String) {
+        isLoading(true)
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
             setDataSource(audioUrl)
+
             setOnPreparedListener {
+                isLoading(false)
                 it.start()
             }
+
+            setOnErrorListener { mp, what, extra ->
+                isLoading(false)
+                true
+            }
+
             setOnCompletionListener {
                 it.release()
             }
+
             prepareAsync()
         }
+    }
+
+    private fun isLoading(loading: Boolean) {
+        binding.loadingIndicator.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.ibSpeaker.visibility = if (loading) View.INVISIBLE else View.VISIBLE
     }
 
     override fun onDestroy() {

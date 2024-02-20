@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -46,6 +49,8 @@ class SearchFragment : Fragment() {
         private fun makeApiRequest(word: String) {
         val apiService = DictionaryApiService.create()
         val call = apiService.getWordDetails(word)
+
+        isLoading(true)
         call.enqueue(object : Callback<List<DictionaryResponseModel>> {
             override fun onResponse(call: Call<List<DictionaryResponseModel>>, response: Response<List<DictionaryResponseModel>>) {
                 if (response.isSuccessful) {
@@ -63,13 +68,22 @@ class SearchFragment : Fragment() {
                 } else{
                     showErrorDialog("Request Error: "+response.code(),"check for misspelling and non-alphabetic characters")
                 }
+                isLoading(false)
             }
 
             override fun onFailure(call: Call<List<DictionaryResponseModel>>, t: Throwable) {
                 t.message?.let { showErrorDialog("Request Error: ", it) }
+                isLoading(false)
             }
         })
     }
+
+    private fun isLoading(loading: Boolean) {
+            binding.loadingIndicator.visibility = if (loading) View.VISIBLE else View.GONE
+            binding.btnSearch.isEnabled = !loading
+            binding.etTerm.visibility = if (loading) View.GONE else View.VISIBLE
+    }
+
     fun showErrorDialog(title: String,message: String) {
         AlertDialog.Builder(context)
             .setTitle(title)
