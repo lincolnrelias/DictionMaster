@@ -17,7 +17,6 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:label="@string/title_activity_splash"
             android:theme="@style/Theme.DictionMaster" >
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
@@ -28,7 +27,6 @@
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            android:label="@string/title_activity_main"
             android:theme="@style/Theme.DictionMaster"/>
     </application>
 
