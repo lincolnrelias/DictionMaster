@@ -6,7 +6,7 @@
 
         <variable
             name="definition"
-            type="com.dictionmaster.search.Definition" />
+            type="com.dictionmaster.data.models.Definition" />
 
         <variable
             name="position"

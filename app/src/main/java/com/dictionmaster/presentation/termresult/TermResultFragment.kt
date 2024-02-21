@@ -1,4 +1,4 @@
-package com.dictionmaster.search
+package com.dictionmaster.presentation.termresult
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dictionmaster.R
+import com.dictionmaster.data.models.DictionaryResponseModel
 import com.dictionmaster.databinding.ResultFragmentBinding
+import com.dictionmaster.ui.adapters.DefinitionAdapter
 
 class TermResultFragment : Fragment() {
     private lateinit var binding: ResultFragmentBinding

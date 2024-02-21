@@ -1,9 +1,10 @@
-package com.dictionmaster.search
+package com.dictionmaster.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dictionmaster.databinding.DefinitionItemBinding
+import com.dictionmaster.data.models.Definition
 
 class DefinitionAdapter(private val definitions: List<Pair<Definition,String>>) :
     RecyclerView.Adapter<DefinitionAdapter.ViewHolder>() {
@@ -35,4 +36,3 @@ class DefinitionAdapter(private val definitions: List<Pair<Definition,String>>) 
 
 
 }
-

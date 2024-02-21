@@ -15,7 +15,7 @@
         android:theme="@style/Theme.DictionMaster"
         tools:targetApi="31">
         <activity
-            android:name=".SplashActivity"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.DictionMaster" >
                 <intent-filter>
@@ -24,7 +24,7 @@
                 </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.DictionMaster"/>

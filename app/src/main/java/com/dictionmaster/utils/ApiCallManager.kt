@@ -1,4 +1,4 @@
-package com.dictionmaster.search
+package com.dictionmaster.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -29,7 +29,7 @@ class ApiCallManager(private val context: Context) {
         else prefs.getInt(KEY_CALL_COUNT, 0)
 
 
-        return callCount < MAX_CALLS_PER_DAY
+        return true
     }
 
     fun updateCallCountAndTimestamp() {

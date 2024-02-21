@@ -1,4 +1,4 @@
-package com.dictionmaster
+package com.dictionmaster.presentation.purchase
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.dictionmaster.R
 import com.dictionmaster.databinding.PurchaseFragmentBinding
 
 class PurchaseFragment : Fragment() {
