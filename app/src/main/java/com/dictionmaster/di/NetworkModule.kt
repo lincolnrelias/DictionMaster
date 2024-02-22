@@ -1,11 +1,9 @@
 package com.dictionmaster.di
 
 import android.app.Application
-import com.dictionmaster.App
 import com.dictionmaster.data.interceptors.DictionaryCacheInterceptor
 import com.dictionmaster.data.remote.DictionaryApi
 import com.dictionmaster.data.remote.DictionaryApiService
-import com.dictionmaster.data.repository.DictionaryRepository
 import com.dictionmaster.utils.ApiCallManager
 import dagger.Module
 import dagger.Provides
@@ -18,13 +16,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
-
-    @Provides
-    @Singleton
-    fun provideDictionaryRepository(apiService: DictionaryApiService): DictionaryRepository {
-        return DictionaryRepository(apiService)
-    }
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -37,19 +29,6 @@ object AppModule {
     fun provideDictionaryApi(dictionaryApiService: DictionaryApiService): DictionaryApi {
         return dictionaryApiService.createApi()
     }
-    @Provides
-    @Singleton
-    fun provideApiCallManager(application: Application): ApiCallManager {
-        return ApiCallManager(application)
-    }
-
-    @Provides
-    @Singleton
-    fun provideCache(application: Application): Cache {
-        val cacheSize = (5 * 1024 * 1024).toLong() // 5 MB
-        val cacheDirectory = File(application.cacheDir, "http-cache")
-        return Cache(cacheDirectory, cacheSize)
-    }
 
     @Provides
     @Singleton
@@ -58,5 +37,13 @@ object AppModule {
             .cache(cache)
             .addInterceptor(DictionaryCacheInterceptor(apiCallManager))
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCache(application: Application): Cache {
+        val cacheSize = (5 * 1024 * 1024).toLong() // 5 MB
+        val cacheDirectory = File(application.cacheDir, "http-cache")
+        return Cache(cacheDirectory, cacheSize)
     }
 }
