@@ -15,24 +15,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="27dp" />
+                app:layout_constraintGuide_begin="24dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="27dp" />
+                app:layout_constraintGuide_end="24dp" />
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="25dp"
                 android:fontFamily="@font/roboto_condensed"
                 android:text="Example"
                 android:textColor="#052D39"
-                android:textSize="45dp"
+                android:textSize="38dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/gl_start"
 
@@ -40,9 +40,9 @@
 
             <ImageButton
                 android:id="@+id/ib_speaker"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/bg_speaker"
                 android:src="@drawable/speaker_icon"
                 app:layout_constraintStart_toEndOf="@id/gl_start"
@@ -50,8 +50,8 @@
 
             <ProgressBar
                 android:id="@+id/loading_indicator"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/ib_speaker"
                 app:layout_constraintEnd_toEndOf="@id/ib_speaker"
@@ -62,11 +62,11 @@
                 android:id="@+id/tv_phonetic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="13dp"
                 android:fontFamily="@font/roboto_condensed"
                 android:text="/ˌedʒuˈkeɪʃn/"
                 android:textColor="#66052D39"
-                android:textSize="22dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@id/ib_speaker"
                 app:layout_constraintStart_toEndOf="@id/ib_speaker"
                 app:layout_constraintTop_toTopOf="@id/ib_speaker" />
@@ -75,7 +75,7 @@
                 android:id="@+id/rv_definitions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toStartOf="@id/gl_end"
                 app:layout_constraintStart_toEndOf="@id/gl_start"
                 app:layout_constraintTop_toBottomOf="@id/ib_speaker" />
@@ -83,8 +83,8 @@
             <View
                 android:id="@+id/v_line"
                 android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:layout_marginTop="37.5dp"
+                android:layout_height="1.4dp"
+                android:layout_marginTop="30.5dp"
                 android:background="#80C0C0C0"
                 app:layout_constraintTop_toBottomOf="@id/rv_definitions" />
 
@@ -92,12 +92,12 @@
                 android:id="@+id/tv_it"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35.5dp"
+                android:layout_marginTop="32.5dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/roboto_condensed"
                 android:text="That's it for Example!"
                 android:textColor="#052D39"
-                android:textSize="24sp"
+                android:textSize="21sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/tv_try_search"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
@@ -107,11 +107,11 @@
                 android:id="@+id/tv_try_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:fontFamily="@font/roboto_condensed"
                 android:text="Try another search now!"
                 android:textColor="#052D39"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@id/bt_new_search"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_it" />
@@ -119,13 +119,13 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/bt_new_search"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_marginBottom="25dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/bg_btn_search"
                 android:fontFamily="@font/roboto_condensed"
                 android:text="NEW SEARCH"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/gl_end"
                 app:layout_constraintStart_toEndOf="@id/gl_start"

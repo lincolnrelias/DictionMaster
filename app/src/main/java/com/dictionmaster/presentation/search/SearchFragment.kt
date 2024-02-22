@@ -15,13 +15,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.dictionmaster.presentation.purchase.PurchaseFragment
 import com.dictionmaster.R
 import com.dictionmaster.data.models.DictionaryResponseModel
 import com.dictionmaster.databinding.SearchFragmentBinding
 import com.dictionmaster.utils.ApiCallManager
-import com.dictionmaster.presentation.termresult.TermResultFragment
 import com.dictionmaster.presentation.termresult.TermResultViewModel
+import com.dictionmaster.utils.ViewUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,10 +39,11 @@ class SearchFragment : Fragment() {
             inflater, R.layout.search_fragment, container, false
         )
         binding.btnSearch.setOnClickListener {
-            lifecycleScope.launch {
-                makeApiRequest1(binding.etTerm.text.toString())
+            ViewUtils.hideKeyboardAndExecute(requireContext(), requireView()) {
+                lifecycleScope.launch {
+                    makeApiRequest(binding.etTerm.text.toString())
+                }
             }
-
         }
         return binding.root
     }
@@ -95,7 +95,8 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun makeApiRequest1(word: String) {
+
+    private fun makeApiRequest(word: String) {
         isLoading(true)
         viewModel.searchWord(word)
     }
@@ -120,7 +121,6 @@ class SearchFragment : Fragment() {
         // Find or create the TermResultViewModel
         val viewModel: TermResultViewModel by activityViewModels()
         viewModel.setData(data)
-
         findNavController().navigate(R.id.action_searchFragment_to_termResultFragment)
     }
 

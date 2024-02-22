@@ -23,11 +23,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp">
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/tv_df"
                 style="@style/Definition"
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{StringUtils.getStyledText(position+`) `,`[`+partOfSpeech+`]`, definition.definition)}"
@@ -40,12 +41,13 @@
         <TextView
             android:id="@+id/exampleTextView"
             style="@style/Definition"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="5"
             android:visibility="@{!definition.example.empty &amp;&amp; definition.example!=null?View.VISIBLE:View.GONE}"
             android:text="@{StringUtils.formatExample(definition.example)}"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="10dp"
             android:gravity="start"
             app:layout_constraintTop_toBottomOf="@id/tv_df"
             />
