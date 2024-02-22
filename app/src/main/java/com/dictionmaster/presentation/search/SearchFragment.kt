@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import com.dictionmaster.data.models.DictionaryResponseModel
 import com.dictionmaster.databinding.SearchFragmentBinding
 import com.dictionmaster.utils.ApiCallManager
 import com.dictionmaster.presentation.termresult.TermResultFragment
+import com.dictionmaster.presentation.termresult.TermResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -52,8 +54,7 @@ class SearchFragment : Fragment() {
         viewModel.searchResults.observe(viewLifecycleOwner, Observer { result ->
             result?.onSuccess { response ->
                 if (response.isSuccessful) {
-                    //response didn't come exclusively from cache
-                    if (response.raw().networkResponse != null) {
+                    if(response.raw().cacheResponse==null){
                         apiCallManager.updateCallCountAndTimestamp()
                     }
                     val data = response.body()
@@ -111,15 +112,19 @@ class SearchFragment : Fragment() {
     }
 
     private fun showResultFragment(data: DictionaryResponseModel) {
-        val resultFragment = TermResultFragment.newInstance(data)
+        // Find or create the TermResultViewModel instance
+        val viewModel: TermResultViewModel by activityViewModels()
+        viewModel.setData(data)
 
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        if (transaction != null) {
-            transaction.replace(android.R.id.content, resultFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+        // Now create the TermResultFragment instance directly
+        val resultFragment = TermResultFragment()
+
+        // Begin the transaction and replace the content with the new Fragment
+        activity?.supportFragmentManager?.beginTransaction()?.apply {
+            replace(android.R.id.content, resultFragment)
+            addToBackStack(null)
+            commit()
         }
-
     }
 
     private fun showPurchaseFragment() {

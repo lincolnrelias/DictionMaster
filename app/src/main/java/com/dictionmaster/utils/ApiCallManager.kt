@@ -25,11 +25,13 @@ class ApiCallManager(private val context: Context) {
         val lastCall = Calendar.getInstance().apply {
             timeInMillis = lastCallTimestamp
         }
-        val callCount = if (today.get(Calendar.DAY_OF_YEAR) != lastCall.get(Calendar.DAY_OF_YEAR)) 0
-        else prefs.getInt(KEY_CALL_COUNT, 0)
-
-
-        return true
+        if (today.get(Calendar.DAY_OF_YEAR) != lastCall.get(Calendar.DAY_OF_YEAR)){
+            val editor = prefs.edit()
+            editor.putInt(KEY_CALL_COUNT, 0)
+            editor.apply()
+        }
+        val callCount = prefs.getInt(KEY_CALL_COUNT,0)
+        return callCount < MAX_CALLS_PER_DAY
     }
 
     fun updateCallCountAndTimestamp() {
