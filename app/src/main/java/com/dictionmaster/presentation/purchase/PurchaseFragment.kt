@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.dictionmaster.R
 import com.dictionmaster.databinding.PurchaseFragmentBinding
 
@@ -22,7 +23,7 @@ class PurchaseFragment : Fragment() {
             inflater, R.layout.purchase_fragment, container, false
         )
         binding.btnSearch.setOnClickListener{
-            activity?.onBackPressed();
+           findNavController().navigate(R.id.action_purchaseFragment_to_searchFragment)
         }
         return binding.root
     }

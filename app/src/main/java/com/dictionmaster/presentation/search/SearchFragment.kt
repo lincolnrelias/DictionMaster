@@ -1,16 +1,20 @@
 package com.dictionmaster.presentation.search
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.dictionmaster.presentation.purchase.PurchaseFragment
 import com.dictionmaster.R
 import com.dictionmaster.data.models.DictionaryResponseModel
@@ -45,11 +49,24 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.resetData()
         super.onViewCreated(view, savedInstanceState)
+        viewModel.resetData()
         setupObserver()
-
+        val args: SearchFragmentArgs by navArgs()
+        if (args.fromNewSearch) {
+            prepareSearchField()
+        }
     }
+
+    private fun prepareSearchField() {
+        binding.etTerm.text?.clear()
+        binding.etTerm.requestFocus()
+        binding.etTerm.post {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.showSoftInput(binding.etTerm, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
     private fun setupObserver() {
         viewModel.searchResults.observe(viewLifecycleOwner, Observer { result ->
             result?.onSuccess { response ->
@@ -78,17 +95,6 @@ class SearchFragment : Fragment() {
         })
     }
 
-    override fun onResume() {
-        //TODO check if should happen only on backpress
-        super.onResume()
-//        binding.etTerm.text?.clear()
-//        binding.etTerm.requestFocus()
-//        binding.etTerm.post {
-//            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//            imm?.showSoftInput(binding.etTerm, InputMethodManager.SHOW_IMPLICIT)
-//        }
-
-    }
     private fun makeApiRequest1(word: String) {
         isLoading(true)
         viewModel.searchWord(word)
@@ -105,38 +111,21 @@ class SearchFragment : Fragment() {
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ ->
-                // Handle positive button click if needed
                 dialog.dismiss()
             }
             .show()
     }
 
     private fun showResultFragment(data: DictionaryResponseModel) {
-        // Find or create the TermResultViewModel instance
+        // Find or create the TermResultViewModel
         val viewModel: TermResultViewModel by activityViewModels()
         viewModel.setData(data)
 
-        // Now create the TermResultFragment instance directly
-        val resultFragment = TermResultFragment()
-
-        // Begin the transaction and replace the content with the new Fragment
-        activity?.supportFragmentManager?.beginTransaction()?.apply {
-            replace(android.R.id.content, resultFragment)
-            addToBackStack(null)
-            commit()
-        }
+        findNavController().navigate(R.id.action_searchFragment_to_termResultFragment)
     }
 
     private fun showPurchaseFragment() {
-        val purchaseFragment = PurchaseFragment()
-
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        if (transaction != null) {
-            transaction.replace(android.R.id.content, purchaseFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
+        findNavController().navigate(R.id.action_searchFragment_to_purchaseFragment)
     }
 
 }

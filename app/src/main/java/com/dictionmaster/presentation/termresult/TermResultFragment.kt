@@ -37,8 +37,8 @@ class TermResultFragment : Fragment(R.layout.result_fragment) {
         }
 
         binding.btNewSearch.setOnClickListener {
-            activity?.onBackPressed()
-        }
+            val action = TermResultFragmentDirections.actionTermResultFragmentToSearchFragment(fromNewSearch=true)
+            findNavController().navigate(action)        }
     }
 
     private fun bindData(data: DictionaryResponseModel) {
